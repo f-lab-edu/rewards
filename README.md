@@ -1,1 +1,1 @@
-# quick-rewards
+# rewards
