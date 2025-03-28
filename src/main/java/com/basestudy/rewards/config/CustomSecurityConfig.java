@@ -3,20 +3,17 @@ package com.basestudy.rewards.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.DelegatingSecurityContextRepository;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
 import com.basestudy.rewards.security.CustomAuthenticationFilter;
 import com.basestudy.rewards.security.handler.CustomAccessDeniedHandler;
 import com.basestudy.rewards.security.handler.CustomAuthenticationEntryPoint;
-import com.basestudy.rewards.security.handler.CustomAuthenticationFailureHandler;
-import com.basestudy.rewards.security.handler.CustomAuthenticationSuccessHandler;
+import com.basestudy.rewards.service.MemberServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,14 +22,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomSecurityConfig{
 
-    private final AuthenticationConfiguration authenticationConfiguration;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
-    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final MemberServiceImpl memberServiceImpl;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        //spring security v6~
+        // AuthenticationManagerBuilder 생성
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(memberServiceImpl);//.passwordEncoder(bCryptPasswordEncoder);
+        
+	    // AuthenticationManager 생성
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
+
         http
             .csrf((csrfConfig)->
                 csrfConfig.disable())
@@ -41,51 +44,28 @@ public class CustomSecurityConfig{
             .headers((headerConfig)->
                 headerConfig.frameOptions(frameOptionsConfig->
                     frameOptionsConfig.disable()))
+            //.formLogin(formLoginConfig -> formLoginConfig.disable()) //UsernamePasswordAuthenticationFilter를 사용하지 않도록 설정하는거라는데 있던 없던 안탐
+            .sessionManagement(sessionManagement -> 
+                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //세션 사용안함
             .authorizeHttpRequests((authorizeHttpRequests)->
                 authorizeHttpRequests
-                    .requestMatchers("/api/signIn", "/api/signUp").permitAll()
+                    .requestMatchers("/signIn", "/signUp").permitAll()
                     //.requestMatchers("/admins/**").hasRole(Role.ADMIN.name()); 
                     // .requestMatchers("/api/**").authenticated()
                     // .anyRequest().permitAll())
                     .anyRequest().authenticated())
-            .addFilterBefore(ajaxAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .authenticationManager(authenticationManager)
+            .addFilterBefore(getCustomAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling((exceptionConfig)->
                 exceptionConfig
                     .authenticationEntryPoint(customAuthenticationEntryPoint)
                     .accessDeniedHandler(accessDeniedHandler));
-  
+            
         return http.build();
     }
 
-    @Bean
-    CustomAuthenticationFilter ajaxAuthenticationFilter() throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
-        customAuthenticationFilter.setAuthenticationManager(authenticationManager());
-        customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
-        customAuthenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler);
-       
-        // **
-        customAuthenticationFilter.setSecurityContextRepository(
-                new DelegatingSecurityContextRepository(
-                        new RequestAttributeSecurityContextRepository(),
-                        new HttpSessionSecurityContextRepository()
-                ));
-
-        return customAuthenticationFilter;
+    private CustomAuthenticationFilter getCustomAuthenticationFilter(AuthenticationManager authenticationManager){
+        return new CustomAuthenticationFilter(authenticationManager);
     }
 
-    @Bean
-    AuthenticationManager authenticationManager() throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    // @Bean
-    // UserDetailsService userDetailsService() {
-    //     return memberService;
-    // }
-
-    // @Bean
-    // public PasswordEncoder passwordEncoder(){
-    //     return new BCryptPasswordEncoder();
-    // }
 }

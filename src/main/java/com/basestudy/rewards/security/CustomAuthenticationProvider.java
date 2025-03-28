@@ -12,7 +12,10 @@ import com.basestudy.rewards.service.MemberService;
 import com.basestudy.rewards.service.MemberServiceImpl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider{
@@ -22,15 +25,15 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        String loginId = authentication.getName();
+        String loginId = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
 
         Member member = (Member) memberService.loadUserByUsername(loginId);
-        
-        if(password.equals(member.getPassword())){
+        log.debug("debug log = {}",password, member);
+        if(!password.equals(member.getPassword())){
             throw new BadCredentialsException("아이디 또는 비밀번호가 맞지않습니다.");
         }
-
+        
         return new CustomAuthenticationToken(member, null, member.getAuthorities());
     }
 

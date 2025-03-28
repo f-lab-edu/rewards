@@ -1,49 +1,54 @@
 package com.basestudy.rewards.security;
 
-import java.io.IOException;
-
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.servlet.ServletException;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Data;
 
 public class CustomAuthenticationFilter extends AbstractAuthenticationProcessingFilter{
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private static final String USERNAME_KEY = "email";
+    private static final String PASSWORD_KEY = "password";
+    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/signIn",
+    "POST"); //일치하는 url 필터 동작
 
     public CustomAuthenticationFilter(){
-        super(new AntPathRequestMatcher("/api/signIn")); //일치하는 url 필터 동작
+        super(DEFAULT_ANT_PATH_REQUEST_MATCHER); 
     }
 
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+		super(DEFAULT_ANT_PATH_REQUEST_MATCHER, authenticationManager);
+	}
+
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
         
         if(!request.getMethod().equals("POST")){
-            throw new IllegalStateException("인증불가");
+            throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
+		String username = obtainUsername(request);
+		username = (username != null) ? username.trim() : "";
+		String password = obtainPassword(request);
+		password = (password != null) ? password : "";
 
-        AuthDto authDto = objectMapper.readValue(request.getReader(), AuthDto.class);
-
-        if(!StringUtils.hasLength(authDto.getEmail()) || !StringUtils.hasLength(authDto.getPassword())){
-            throw new IllegalArgumentException("아이디 또는 패스워드가 입력되지 않았습니다.");
-        }
-
-        CustomAuthenticationToken token = new CustomAuthenticationToken(authDto.getEmail(), authDto.getPassword());
-
+        CustomAuthenticationToken token = new CustomAuthenticationToken(username, password);
+        
         Authentication authenticate = getAuthenticationManager().authenticate(token);
 
         return authenticate;
     }
 
-    @Data
-    public static class AuthDto {
-        private String email;
-        private String password;
+    @Nullable
+    protected String obtainUsername(HttpServletRequest request){
+        return request.getParameter(USERNAME_KEY);
+    }
+    @Nullable
+    protected String obtainPassword(HttpServletRequest request){
+        return request.getParameter(PASSWORD_KEY);
     }
 }
