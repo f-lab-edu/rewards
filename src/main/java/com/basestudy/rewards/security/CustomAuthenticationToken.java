@@ -24,7 +24,14 @@ public class CustomAuthenticationToken extends AbstractAuthenticationToken{
         this.credentials = credentials;
         super.setAuthenticated(true);
     }
-
+    //인증후, jwt토큰 전달
+    public CustomAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities, String details){
+        super(authorities);
+        this.principal = principal;
+        this.credentials = credentials;
+        super.setDetails(details);
+        super.setAuthenticated(true);
+    }
     @Override
     public Object getCredentials(){
         return this.credentials;
