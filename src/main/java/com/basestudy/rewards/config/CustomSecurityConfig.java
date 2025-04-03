@@ -70,7 +70,7 @@ public class CustomSecurityConfig{
                 authorizeHttpRequests
                     //.requestMatchers("/signIn", "/signUp").permitAll()
                     //.requestMatchers("/admins/**").hasRole(Role.ADMIN.name()); 
-                    // .requestMatchers("/api/**").authenticated()
+                    .requestMatchers("/api/**").authenticated()
                     .anyRequest().permitAll())
                     //.anyRequest().authenticated())
             .authenticationProvider(this.getCustomAuthenticationProvider(memberService, jwtTokenUtil))

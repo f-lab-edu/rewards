@@ -1,8 +1,8 @@
 package com.basestudy.rewards.security.handler;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,12 +30,11 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         ApiResponseWrapper<?> apiResponseWrapper = ApiResponseWrapper.createFail(null, "401", getExceptionMessage(exception)); //HttpStatus.UNAUTHORIZED
         String message = objectMapper.writeValueAsString(apiResponseWrapper);
         
-        response.setStatus(HttpStatus.OK.value());
-        response.setCharacterEncoding("utf-8");
+        // response.setStatus(HttpStatus.OK.value());
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(message);
-        // response.getWriter().flush();
-        // response.flushBuffer();
     }
 
     private String getExceptionMessage(AuthenticationException exception) {

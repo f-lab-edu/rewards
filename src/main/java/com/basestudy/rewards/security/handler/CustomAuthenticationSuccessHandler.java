@@ -1,6 +1,7 @@
 package com.basestudy.rewards.security.handler;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,14 +28,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         ObjectMapper objectMapper = new ObjectMapper();
         ApiResponseWrapper<?> apiResponseWrapper = ApiResponseWrapper.createSuccess(authentication.getDetails());
         String message = objectMapper.writeValueAsString(apiResponseWrapper);
-        log.debug("onAuthenticationSuccess {} : {}", "onAuthenticationSuccess", message);
+        log.debug("onAuthenticationSuccess : message = {}", message);
         
         response.setStatus(HttpStatus.OK.value());
-        response.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(message);
-        response.getWriter().flush();
-        response.flushBuffer();
     }
 
 }
