@@ -1,12 +1,9 @@
 package com.basestudy.rewards.security.handler;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-import javax.security.auth.login.CredentialExpiredException;
-import javax.security.auth.login.LoginException;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -18,15 +15,26 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.stereotype.Component;
 
 import com.basestudy.rewards.ApiResponseWrapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Component
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException{
-        ApiResponseWrapper.createFail(null, "401", getExceptionMessage(exception)); //HttpStatus.UNAUTHORIZED
+        ObjectMapper objectMapper = new ObjectMapper();
+        ApiResponseWrapper<?> apiResponseWrapper = ApiResponseWrapper.createFail(null, "401", getExceptionMessage(exception)); //HttpStatus.UNAUTHORIZED
+        String message = objectMapper.writeValueAsString(apiResponseWrapper);
+        
+        // response.setStatus(HttpStatus.OK.value());
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write(message);
     }
 
     private String getExceptionMessage(AuthenticationException exception) {
