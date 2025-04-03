@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -39,6 +40,10 @@ public class CustomSecurityConfig{
     private final MemberServiceImpl memberService;
     private final JwtAuthenticationProvider jwtAuthenticationProvider; //AuthenticationProvider을 상속받지 않은 Provider
   
+    private static final String[] AUTH_WHITELIST = {
+        "/api-docs**", "/swagger-ui/**", "/swagger-ui.html"
+    };
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //spring security v6~
@@ -68,6 +73,7 @@ public class CustomSecurityConfig{
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //세션 사용안함
             .authorizeHttpRequests((authorizeHttpRequests)->
                 authorizeHttpRequests
+                    //.requestMatchers(AUTH_WHITELIST).permitAll()
                     //.requestMatchers("/signIn", "/signUp").permitAll()
                     //.requestMatchers("/admins/**").hasRole(Role.ADMIN.name()); 
                     .requestMatchers("/api/**").authenticated()
@@ -97,5 +103,11 @@ public class CustomSecurityConfig{
     }
     private JwtAuthenticationFilter getJwtAuthenticationFilter(JwtAuthenticationProvider jwtAuthenticationProvider, JwtTokenUtil jwtTokenUtil){
         return new JwtAuthenticationFilter(jwtAuthenticationProvider, jwtTokenUtil);
+    }
+
+    @Bean
+    WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers(AUTH_WHITELIST);
     }
 }
