@@ -1,12 +1,16 @@
 package com.basestudy.rewards.security;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.basestudy.rewards.ApiResponseWrapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -52,7 +56,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 //ㄴㄴ얘는 (상속받은 내용에의해) 문제없으면 다음필터로 통과시키는 애지 성공했다고 뭘 처리하는 애가 아님
                 log.debug("인증 성공: 로그인 프로세스");
             } else {
-                throw new AuthenticationServiceException("인증 헤더 없거나 유효하지 않은 토큰입니다.");
+                //필터에서 나는 오류는 controll advice로 처리 불가
+                //dofilter의 exception은 전파 안됨, servletExcpion으로 래핑해야 전파 가능
+                //login용으로 handler가 따로 존재하는 이유가 있네, ExceptionTranslationFilter앞에 있는 필터들에 한해 처리됨
+                //잘못된사용->throw new AuthenticationException("인증 헤더 없거나 유효하지 않은 토큰입니다.");
+                handleAuthenticationFailure(response, "인증 헤더 없거나 유효하지 않은 토큰입니다.");
             }
 
         filterChain.doFilter(request, response);
@@ -69,10 +77,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return jwtTokenUtil.validateToken(token);
     }
 
-    // private void handleAuthenticationFailure(HttpServletResponse response, String message) throws IOException {
-    //     log.warn("인증 실패: {}", message);
-    //     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    //     response.setContentType("application/json");
-    //     response.getWriter().write("{\"error\": \"" + message + "\"}");
-    // }
+    private void handleAuthenticationFailure(HttpServletResponse response, String message) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ApiResponseWrapper<?> apiResponseWrapper = ApiResponseWrapper.createFail(null, "401", message); //HttpStatus.UNAUTHORIZED
+        
+        // response.setStatus(HttpStatus.OK.value());
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write(objectMapper.writeValueAsString(apiResponseWrapper));//명시적 close안하고 컨테이너가 자동관리
+    }
 }
