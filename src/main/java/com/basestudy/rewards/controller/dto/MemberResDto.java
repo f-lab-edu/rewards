@@ -3,8 +3,10 @@ package com.basestudy.rewards.controller.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -12,6 +14,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberResDto {
     @NotEmpty
     private long id;
@@ -21,13 +25,4 @@ public class MemberResDto {
     private String name;
     @NotBlank
     private String phone;
-
-    public MemberResDto(){}
-
-    public MemberResDto(long id, String email, String name, String phone){
-        this.id = id;
-        this.email = email;
-        this.name = name;
-        this.phone = phone;
-    }
 }

@@ -1,5 +1,7 @@
 package com.basestudy.rewards.service;
 
+import java.util.Optional;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,8 +28,8 @@ public class MemberServiceImpl implements MemberService, UserDetailsService{
     }
 
     @Transactional
-    public ApiResponseWrapper<?> signUp(SignUpDto memberDto){
-        memberRepository.findByEmail(memberDto.getEmail()).ifPresent(item -> {
+    public ApiResponseWrapper<?> signUp(SignUpDto memberDto) throws RuntimeException{
+        this.getMemberWithEmail(memberDto.getEmail()).ifPresent(item -> {
             //TODO: exception handler로 처리필요
             throw new RuntimeException("이미 가입되었습니다.");
         });
@@ -35,8 +37,12 @@ public class MemberServiceImpl implements MemberService, UserDetailsService{
         Member member = memberDto.toEntity();
         
         memberRepository.save(member);
-        return ApiResponseWrapper.createSuccess("회원가입이 완료되었습니다.");
+        return ApiResponseWrapper.createSuccess("저장되었습니다.");
     }
-
+    
+    @Transactional(readOnly = true)
+    public Optional<Member> getMemberWithEmail(String email){
+        return memberRepository.findByEmail(email);
+    }
     //TODO: validation 추가
 }

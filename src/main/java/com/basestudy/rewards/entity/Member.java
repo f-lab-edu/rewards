@@ -34,7 +34,7 @@ public class Member implements UserDetails{
     @Id
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY) //지연로딩 불가, DB의 auto increment에 키생성 위임
-    private Long id;
+    private long id;
 
     @Column(nullable = false, length = 200)
     @Email

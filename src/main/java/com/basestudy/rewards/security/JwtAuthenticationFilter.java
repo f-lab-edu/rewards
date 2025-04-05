@@ -60,7 +60,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 //dofilter의 exception은 전파 안됨, servletExcpion으로 래핑해야 전파 가능
                 //login용으로 handler가 따로 존재하는 이유가 있네, ExceptionTranslationFilter앞에 있는 필터들에 한해 처리됨
                 //잘못된사용->throw new AuthenticationException("인증 헤더 없거나 유효하지 않은 토큰입니다.");
-                handleAuthenticationFailure(response, "인증 헤더 없거나 유효하지 않은 토큰입니다.");
+                //handleAuthenticationFailure(response, "인증 헤더 없거나 유효하지 않은 토큰입니다.");
+                log.info("JwtAuthenticationFilter ::: 헤더에 토큰 없음");
             }
 
         filterChain.doFilter(request, response);
@@ -77,14 +78,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return jwtTokenUtil.validateToken(token);
     }
 
-    private void handleAuthenticationFailure(HttpServletResponse response, String message) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ApiResponseWrapper<?> apiResponseWrapper = ApiResponseWrapper.createFail(null, "401", message); //HttpStatus.UNAUTHORIZED
+    // private void handleAuthenticationFailure(HttpServletResponse response, String message) throws IOException {
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     ApiResponseWrapper<?> apiResponseWrapper = ApiResponseWrapper.createFail(null, "401", message); //HttpStatus.UNAUTHORIZED
         
-        // response.setStatus(HttpStatus.OK.value());
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(apiResponseWrapper));//명시적 close안하고 컨테이너가 자동관리
-    }
+    //     // response.setStatus(HttpStatus.OK.value());
+    //     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    //     response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+    //     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    //     response.getWriter().write(objectMapper.writeValueAsString(apiResponseWrapper));//명시적 close안하고 컨테이너가 자동관리
+    // }
 }
