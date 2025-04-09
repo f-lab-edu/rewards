@@ -2,8 +2,12 @@ package com.basestudy.rewards.entity;
 
 import java.time.LocalDateTime;
 
+import com.basestudy.rewards.contants.CouponStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,25 +32,28 @@ public class Coupon {
     @Column(name = "coupon_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    //TODO: name을 id로 변경하고 enum class로 관리하기
     @Column(nullable = false)
-    private String code;
-
-    @Column(nullable = false, name = "available_to")
-    private LocalDateTime availableTo; //발급가능일자 종료
+    private String name;
 
     @Column(nullable = false, name = "available_from")
-    private LocalDateTime availableFrom; //발급가능일자 시작
+    private LocalDateTime availableFrom; //발급시작일
 
-    @Column(nullable = false, name = "total_amount")
-    private int totalAmount; 
-    //잔여갯수를 따로 관리안하면 매번 디비에서 조회해오는 상황일텐데 괜찮나
-    //잔여갯수를 따로 관리해도 매번 디비에서 가져와야하는구나..그래도계산은 안하겠네
-    //jpa에서 어떻게 못하나, 따로 entity로 빼서 가지고 있고 실제 디비에는 안가지고 있는 것도 가능한거아닌가
-    //redis cache가 잔여갯수 카운트만 해줘도 되겠네
-    // @Column(nullable = false)
-    // private int remaining;
+    @Column(nullable = false, name = "available_to")
+    private LocalDateTime availableTo; //발급종료일
+
+    @Column(nullable = false, name = "total_quantity")
+    private int totalQuantity; //총 발급 가능 수량
+
+    @Column(nullable = false, name = "issued_quantity")
+    private int issuedQuantity; //현재 발급된 수량
 
     @Column(nullable = false)
-    private int useDays; //
+    private int useDays; // 사용가능일수
+
+    @Enumerated(EnumType.STRING)
+    private CouponStatus status; //쿠폰 상태
+
+    @Column
+    private String suspensionReason; //발급 중단 사유 (필요 시)
 }
