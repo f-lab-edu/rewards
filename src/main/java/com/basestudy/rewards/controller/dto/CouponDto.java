@@ -2,51 +2,39 @@ package com.basestudy.rewards.controller.dto;
 
 import java.time.LocalDateTime;
 
-import com.basestudy.rewards.entity.Coupon;
+import com.basestudy.rewards.contants.CouponStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+@Schema(description = "쿠폰")
 @Getter
 @Setter
 @ToString
 @Builder
 public class CouponDto {
+    @Schema(description = "쿠폰ID")
     private long couponId;
-    private String code;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") 
-    private LocalDateTime availableTo;
+    @Schema(description = "쿠폰이름", nullable = false)
+    private String name;
+    @Schema(description = "발급시작일", example = "yyyy-MM-dd HH:mm:ss", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") 
     private LocalDateTime availableFrom;
-    private int totalAmount;
+    @Schema(description = "발급종료일", example = "yyyy-MM-dd HH:mm:ss", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") 
+    private LocalDateTime availableTo;
+    @Schema(description = "발급총량", nullable = false, type = "integer")
+    private int totalQuantity;
+    @Schema(description = "발급수량", nullable = false, type = "integer")
+    private int issuedQuantity;
+    @Schema(description = "사용가능일수", nullable = false, type = "integer")
     private int useDays;
-
-    public CouponDto(){}
-    public CouponDto(long couponId, String code, LocalDateTime availableTo, LocalDateTime availableFrom, int totalAmount, int useDays){
-        this.couponId = couponId;
-        this.code = code;
-        this.availableTo = availableTo;
-        this.availableFrom = availableFrom;
-        this.totalAmount = totalAmount;
-        this.useDays = useDays;
-    }
-    public CouponDto(String code, LocalDateTime availableTo, LocalDateTime availableFrom, int totalAmount, int useDays){
-        this.code = code;
-        this.availableTo = availableTo;
-        this.availableFrom = availableFrom;
-        this.totalAmount = totalAmount;
-        this.useDays = useDays;
-    }
-    public Coupon toEntity(){
-        return Coupon.builder()
-                    .code(this.code)
-                    .availableTo(this.availableTo)
-                    .availableFrom(this.availableFrom)
-                    .totalAmount(this.totalAmount)
-                    .useDays(this.useDays)
-                    .build();
-    }
+    @Schema(description = "쿠폰상태", nullable = false, type = "string")
+    private CouponStatus status;
+    @Schema(description = "발급중단사유", type = "string")
+    private String suspensionReason;
 }
