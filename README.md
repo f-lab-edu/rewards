@@ -47,4 +47,4 @@
 - [ ] 로그인 기능 시큐리티 필터대신 controller에서 처리하도록하기(내용정리하기)  
 - [ ] application.yml 구성  
 - [ ] 실행 테스트 (`./gradlew bootRun`)  
-- [ ] 배포 설정 (application.properties 로컬과 올릴거 구분시키기/브랜치랑 설정은 -dev -qa로 운영하고 분리시켜줘야함)
+- [ ] 배포 설정
