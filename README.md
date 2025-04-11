@@ -1,9 +1,51 @@
 # rewards
-쿠폰/리워드 지급을 전략에 따라 다양하게 이용가능하도록 기능 제공
+## 🎁 쿠폰/리워드 운영 서비스
+사용자에게 쿠폰을 선착순으로 발급하고, 관리자는 운영 및 성과를 분석할 수 있는 쿠폰 운영 백엔드 서비스입니다.
 
-기술스택
-spring boot, MySQL, JPA
+### 📌 기술 스택
+- **Language**: Java 21  
+- **Framework**: Spring Boot, Spring Security  
+- **Authentication**: JWT  
+- **Database**: MySQL  
+- **Build Tool**: Gradle  
 
-유즈케이스 다이어그램
-이 프로젝트에서는 리워드서비스를 구현한다
-<img width="926" alt="image" src="https://github.com/user-attachments/assets/02002293-8c4a-4e42-81a7-7887e3285ddc" />
+### 🎯 주요 기능
+- JWT 기반 사용자 인증 및 권한 처리
+- 쿠폰 생성 / 조회 / 삭제 (CRUD)
+- 쿠폰 유효성 검사 및 사용자 조건 검증
+- 사용자 선착순 쿠폰 발급 및 중복 발급 방지
+- 관리자, 사용자 Role 기반 기능 구분
+- Redis를 활용한 중복요청 방지 (5초 내 재요청 거부 등)
+🔎 [기능 도출 문제정의 시나리오 상세] https://aaaajin.notion.site/1d2a4c074939803fa1cbc4cf1d87bb38?pvs=4
+
+### 📂 패키지 구조
+```
+└── src
+    └── main
+        ├── java
+        │   └── com.example.coupon
+        │       ├── config         # Security, Swagger 설정
+        │       ├── constant       # 상수 정의
+        │       ├── controller     # API 엔드포인트
+        │       ├── entity         # 엔티티 클래스
+        │       ├── exception      # ExceptionHandler 및 커스텀Exception 정의
+        │       ├── repository     # JPA Repository
+        │       ├── security       # JWT 인증/인가 관련
+        │       └── service        # 비즈니스 로직
+        └── resources
+            └── application.properties
+```
+
+### 🔐 인증 방식
+- 사용자 로그인 시 JWT 토큰 발급
+- 이후 모든 요청에 대해 토큰 기반 인증 수행
+- 사용자 권한(Role)에 따라 API 접근 제어
+
+### 📈 개발 진행 상황
+- [x] 회원가입, 로그인
+- [x] 스프링시큐리티
+- [x] 쿠폰 CRUD 기능 개발
+- [ ] 쿠폰 페이징처리
+- [ ] 사용자 선착순 쿠폰 발행 기능 추가
+- [ ] 사용자 권한에 따라 기능구분을 위한 role 추가 
+- [ ] 배포 설정
