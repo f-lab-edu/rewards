@@ -2,7 +2,7 @@ package com.basestudy.rewards.entity;
 
 import java.time.LocalDateTime;
 
-import com.basestudy.rewards.contants.CouponStatus;
+import com.basestudy.rewards.constants.CouponStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Coupon {
     @Id
-    @Column(name = "coupon_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     //TODO: name을 id로 변경하고 enum class로 관리하기

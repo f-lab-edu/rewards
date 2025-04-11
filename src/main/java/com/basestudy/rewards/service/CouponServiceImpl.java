@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.basestudy.rewards.ApiResponseWrapper;
-import com.basestudy.rewards.contants.CouponStatus;
+import com.basestudy.rewards.constants.CouponStatus;
 import com.basestudy.rewards.controller.dto.CouponDto;
 import com.basestudy.rewards.entity.Coupon;
 import com.basestudy.rewards.repository.CouponRepository;

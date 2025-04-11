@@ -15,7 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.basestudy.rewards.contants.CouponStatus;
+import com.basestudy.rewards.constants.CouponStatus;
 import com.basestudy.rewards.controller.dto.CouponDto;
 import com.basestudy.rewards.entity.Coupon;
 import com.basestudy.rewards.repository.CouponRepository;

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 
-@Tag(name = "coupon", description = "관리자 입장의 쿠폰발급 crud")
+@Tag(name = "coupon-manager", description = "관리자 입장의 쿠폰발행 crud")
 @ApiResponses({
     @ApiResponse(responseCode = "200", description = ""),
     @ApiResponse(responseCode = "400", description = "잘못된 요청입니다")
@@ -28,20 +28,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/coupon/")
-public class CouponController {
+public class ManagerCouponController {
     private final CouponService couponService;
 
-    @Operation(summary = "쿠폰 생성", description = "쿠폰을 생성합니다.", tags = {"coupon"})
+    @Operation(summary = "쿠폰 발행", description = "쿠폰을 생성합니다.", tags = {"coupon-manager"})
     @ApiResponses(value = {
         @ApiResponse(responseCode = "400", description = "..")
     })
-    @PostMapping("create")
+    @PostMapping("generate")
     public ApiResponseWrapper<?> createCoupon(@RequestBody CouponDto couponDto) {
         ApiResponseWrapper<?> res = couponService.createCoupon(couponDto);        
         return res;
     }
 
-    @Operation(summary = "쿠폰 정보 조회", description = "쿠폰 한개를 조회합니다.", tags = {"coupon"})
+    @Operation(summary = "쿠폰 정보 조회", description = "쿠폰 한개를 조회합니다.", tags = {"coupon-manager"})
     @ApiResponses(value = {
         @ApiResponse(responseCode = "400", description = "조회된 정보가 없습니다.")
     })
@@ -50,7 +50,7 @@ public class CouponController {
         ApiResponseWrapper<CouponDto> res = ApiResponseWrapper.createSuccess(null);//couponService.getCoupon(id);
         return res;
     }
-
+    
     //Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
     //Date oldDate = Date.from(instant);
 }
