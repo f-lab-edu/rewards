@@ -26,7 +26,7 @@ public class MemberCouponResDto {
     private LocalDateTime expiredDate;
     private boolean allowDup;
 
-    private String code;
+    private String name;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") 
     private LocalDateTime availableTo;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") 
