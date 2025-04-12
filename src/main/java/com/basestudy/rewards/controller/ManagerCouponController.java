@@ -36,7 +36,7 @@ public class ManagerCouponController {
         @ApiResponse(responseCode = "400", description = "..")
     })
     @PostMapping("generate")
-    public ApiResponseWrapper<?> createCoupon(@RequestBody CouponDto couponDto) {
+    public ApiResponseWrapper<?> generateCoupon(@RequestBody CouponDto couponDto) {
         ApiResponseWrapper<?> res = couponService.createCoupon(couponDto);        
         return res;
     }

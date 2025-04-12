@@ -25,7 +25,7 @@ public class CouponServiceImpl implements CouponService{
     public ApiResponseWrapper<?> createCoupon(CouponDto couponDto){
         valid(couponDto);
         couponDto.setIssuedQuantity(0);
-        couponDto.setStatus(CouponStatus.ACTIVE);
+        couponDto.setStatus(CouponStatus.STANBY);
         couponRepository.save(CouponMapper.toEntity(couponDto));
         return ApiResponseWrapper.createSuccess("저장되었습니다.");
     }

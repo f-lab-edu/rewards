@@ -29,11 +29,9 @@ public class UserCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //지연로딩 불가, DB의 auto increment에 키생성 위임
     private long id;
 
-    @Id
     @Column(name = "coupon_id")
     private long couponId;
 
-    @Id
     @Column(name = "member_id")
     private long memberId;
 
