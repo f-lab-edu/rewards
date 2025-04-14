@@ -17,7 +17,7 @@ public class ApiResponseWrapper<T> {
     @Schema(description = "응답 상태 코드", type = "string", example = "200")
     private String code; 
     @Schema(description = "응답 메시지", type = "string")
-    private String messsage;
+    private String message;
     @Schema(description = "응답 데이터")
     private T Data;
 
@@ -26,7 +26,7 @@ public class ApiResponseWrapper<T> {
         ApiResponseWrapper<T> response = new ApiResponseWrapper<>();
         response.setSuccess(true);
         response.setCode("200");
-        response.setMesssage(null);
+        response.setMessage(null);
         response.setData(result);
         return response;
    }
@@ -35,7 +35,7 @@ public class ApiResponseWrapper<T> {
         ApiResponseWrapper<T> response = new ApiResponseWrapper<>();
         response.setSuccess(false);
         response.setCode(code);
-        response.setMesssage(message);
+        response.setMessage(message);
         response.setData(result);
         return response;
     }
