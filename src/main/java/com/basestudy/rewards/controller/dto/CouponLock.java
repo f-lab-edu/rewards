@@ -13,6 +13,6 @@ import lombok.ToString;
 @ToString
 @Builder
 public class CouponLock {
-    private CouponLockStatus status;
     private long couponId;
+    private CouponLockStatus status;
 }

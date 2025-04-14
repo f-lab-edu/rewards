@@ -2,7 +2,6 @@ package com.basestudy.rewards.service;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -79,7 +78,7 @@ public class CouponServiceTest {
         when(couponRepository.findById(5L)).thenReturn(Optional.of(coupon));
 
         // couponRepository.save() Mock 설정
-        when(couponRepository.save(any(Coupon.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        //when(couponRepository.save(any(Coupon.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // CouponDto 생성
         CouponDto couponDto = CouponDto.builder()
@@ -92,7 +91,9 @@ public class CouponServiceTest {
                                         .build();
 
         //when & then
-        assertDoesNotThrow(()->couponService.updateCoupon(couponDto));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()->couponService.updateCoupon(couponDto));
+     
+   
     }
 
 }

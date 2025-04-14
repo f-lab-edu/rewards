@@ -40,7 +40,4 @@ public class UserCoupon {
     
     @Column(nullable = false, name = "exipred_date")
     private LocalDateTime expiredDate;
-
-    @Column(nullable = false, name = "allow_dup")
-    private boolean allowDup;
 }

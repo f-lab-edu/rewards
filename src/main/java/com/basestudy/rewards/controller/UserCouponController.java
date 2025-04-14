@@ -1,5 +1,7 @@
 package com.basestudy.rewards.controller;
 
+import java.util.Map;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,8 +31,8 @@ public class UserCouponController {
 
     @Operation(summary = "쿠폰 발급", description = "사용자에게 쿠폰을 발급합니다.", tags = {"coupon-user"})
     @PostMapping("distribute")
-    public ApiResponseWrapper<?> distributeCoupon(@AuthenticationPrincipal Member member, @RequestBody long couponId) {
-        ApiResponseWrapper<?> res = userCouponService.distributeCoupon(member, couponId);
+    public ApiResponseWrapper<?> distributeCoupon(@AuthenticationPrincipal Member member, @RequestBody Map<String, Long> reqbody) {
+        ApiResponseWrapper<?> res = userCouponService.distributeCoupon(member, reqbody.get("couponId"));
         
         return res;
     }

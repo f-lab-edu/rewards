@@ -17,7 +17,8 @@ public class ResponseExceptionHandler{
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     protected ApiResponseWrapper<?> handleServerException(Exception e){
-        log.debug("debug log for error ={}",e.getMessage(), e);
+        log.error("debug log for error ={}",e.getMessage(), e);
+        
         return ApiResponseWrapper.createFail(e.getMessage(), "400", e.getMessage());
     }
 }
