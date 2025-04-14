@@ -45,3 +45,4 @@
 - 서버간 일관성 유지
 - 사용자 편의성을 위해 짧은 응답대기시간
 - 중복발급 등의 상황 고려
+<img width="1078" alt="image" src="https://github.com/user-attachments/assets/d65bac38-1cf1-4fea-8c89-849cc95e4522" />
