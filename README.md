@@ -27,7 +27,7 @@
         │       ├── config         # 설정 파일 (CORS, Swagger 등)
         │       ├── constant       # 공통 상수 정의 (Enum, Status 코드 등)
         │       ├── controller     # API 엔드포인트
-        │       ├── domain         # 핵심 비즈니스 로직 담당 도메인 객체 (DDD 적용 영역)
+        │       ├── domain         # 핵심 비즈니스 로직 담당 도메인 객체 (DDD 적용 영역, Entity 등을 포함)
         │       ├── exception      # 예외 클래스 및 글로벌 예외 핸들러
         │       ├── infra          # 외부 시스템과의 통신 (Redis, Kafka 등) 관련 구현체
         │       ├── repository     # JPA Repository 인터페이스
