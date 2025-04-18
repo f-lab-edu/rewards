@@ -1,7 +1,7 @@
 package com.basestudy.rewards.service.mapper;
 
 import com.basestudy.rewards.controller.dto.UserCouponDto;
-import com.basestudy.rewards.entity.UserCoupon;
+import com.basestudy.rewards.domain.UserCoupon;
 
 public class UserCouponMapper {
     public static UserCouponDto toKafkaObj(long memberId, long couponId){

@@ -1,4 +1,4 @@
-package com.basestudy.rewards.service;
+package com.basestudy.rewards.infra;
 
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;

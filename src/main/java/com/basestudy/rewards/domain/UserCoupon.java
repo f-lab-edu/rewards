@@ -1,4 +1,4 @@
-package com.basestudy.rewards.entity;
+package com.basestudy.rewards.domain;
 
 import java.time.LocalDateTime;
 

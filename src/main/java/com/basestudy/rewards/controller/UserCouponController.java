@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.basestudy.rewards.ApiResponseWrapper;
-import com.basestudy.rewards.entity.Member;
+import com.basestudy.rewards.domain.Member;
 import com.basestudy.rewards.service.UserCouponService;
 
 import io.swagger.v3.oas.annotations.Operation;

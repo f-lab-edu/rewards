@@ -16,7 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.basestudy.rewards.constants.CouponStatus;
 import com.basestudy.rewards.controller.dto.CouponDto;
-import com.basestudy.rewards.entity.Coupon;
+import com.basestudy.rewards.domain.Coupon;
+import com.basestudy.rewards.domain.Quantity;
 import com.basestudy.rewards.repository.CouponRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,12 +65,13 @@ public class CouponServiceTest {
     @DisplayName("쿠폰변경실패")
     public void updateCouponsSuccess(){
         //given
+        Quantity quantity = new Quantity( 100, 0);
         Coupon coupon = Coupon.builder()
                                 .id(5L)
                                 .name("테스트 쿠폰")
                                 .availableFrom(LocalDateTime.now())
                                 .availableTo(LocalDateTime.now().plusDays(1))
-                                .totalQuantity(100)
+                                .quantity(quantity)
                                 .useDays(5)
                                 .status(CouponStatus.ACTIVE) // 상태 설정
                                 .build();

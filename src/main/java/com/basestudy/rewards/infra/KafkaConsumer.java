@@ -1,9 +1,10 @@
-package com.basestudy.rewards.service;
+package com.basestudy.rewards.infra;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.basestudy.rewards.controller.dto.UserCouponDto;
+import com.basestudy.rewards.service.UserCouponService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
