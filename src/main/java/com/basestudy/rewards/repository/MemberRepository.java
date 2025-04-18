@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.basestudy.rewards.entity.Member;
+import com.basestudy.rewards.domain.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom{
     // 기본적으로 save, findone, findall, count, delete 기능 제공

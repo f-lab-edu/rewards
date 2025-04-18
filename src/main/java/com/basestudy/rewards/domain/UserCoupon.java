@@ -1,9 +1,11 @@
-package com.basestudy.rewards.entity;
+package com.basestudy.rewards.domain;
 
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -14,19 +16,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "member_coupon")
-@EqualsAndHashCode(callSuper = false, of = "couponId")
+@Table(name = "user_coupon")
+@EqualsAndHashCode(callSuper = false, of = "id")
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberCoupon {
+public class UserCoupon {
     @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //지연로딩 불가, DB의 auto increment에 키생성 위임
+    private long id;
+
     @Column(name = "coupon_id")
     private long couponId;
 
-    @Id
     @Column(name = "member_id")
     private long memberId;
 
@@ -35,7 +40,4 @@ public class MemberCoupon {
     
     @Column(nullable = false, name = "exipred_date")
     private LocalDateTime expiredDate;
-
-    @Column(nullable = false, name = "allow_dup")
-    private boolean allowDup;
 }

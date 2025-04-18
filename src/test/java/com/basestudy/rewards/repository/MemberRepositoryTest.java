@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import com.basestudy.rewards.entity.Member;
-
-import jakarta.transaction.Transactional;
+import com.basestudy.rewards.domain.Member;
 
 // @SpringBootTest
 @DataJpaTest
@@ -20,20 +18,19 @@ public class MemberRepositoryTest {
     private MemberRepository memberRepository;
 
     @Test
-    @Transactional
     @DisplayName("member DB저장 확인")
     void jpaSave() {
         //id직접설정시 jpa save 실행결과는 merge가 실행되고 새로운 객체를 반환한다.
         //generate id를 사용하면 들어간 entity가 그대로 반환됨
         Member member = Member.builder()
-                                .email("steven@netmail.com")
+                                .email("steven11@netmail.com")
                                 .phone("01012341234")
-                                .name("steven")
+                                .name("steven11")
                                 .password("steven11")
                                 .build();
         Member saveMember = memberRepository.save(member);
         Assertions.assertThat(saveMember).isSameAs(member);
-        Assertions.assertThat(memberRepository.findByEmail("steven@netmail.com").get().getEmail()).isEqualTo(member.getEmail());
+        Assertions.assertThat(memberRepository.findByEmail("steven11@netmail.com").get().getEmail()).isEqualTo(member.getEmail());
     }
 
 

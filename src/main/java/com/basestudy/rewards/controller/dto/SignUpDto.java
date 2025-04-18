@@ -1,6 +1,6 @@
 package com.basestudy.rewards.controller.dto;
 
-import com.basestudy.rewards.entity.Member;
+import com.basestudy.rewards.domain.Member;
 
 import lombok.Builder;
 import lombok.Getter;

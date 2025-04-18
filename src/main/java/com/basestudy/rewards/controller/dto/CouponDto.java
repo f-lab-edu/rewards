@@ -2,7 +2,7 @@ package com.basestudy.rewards.controller.dto;
 
 import java.time.LocalDateTime;
 
-import com.basestudy.rewards.contants.CouponStatus;
+import com.basestudy.rewards.constants.CouponStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.v3.oas.annotations.media.Schema;

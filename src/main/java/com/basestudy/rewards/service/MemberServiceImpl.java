@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.basestudy.rewards.ApiResponseWrapper;
 import com.basestudy.rewards.controller.dto.SignUpDto;
-import com.basestudy.rewards.entity.Member;
+import com.basestudy.rewards.domain.Member;
 import com.basestudy.rewards.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
