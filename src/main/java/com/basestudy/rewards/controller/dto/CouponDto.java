@@ -2,7 +2,7 @@ package com.basestudy.rewards.controller.dto;
 
 import java.time.LocalDateTime;
 
-import com.basestudy.rewards.contants.CouponStatus;
+import com.basestudy.rewards.constants.CouponStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,7 +18,7 @@ import lombok.ToString;
 @Builder
 public class CouponDto {
     @Schema(description = "쿠폰ID")
-    private long couponId;
+    private Long couponId;
     @Schema(description = "쿠폰이름", nullable = false)
     private String name;
     @Schema(description = "발급시작일", example = "yyyy-MM-dd HH:mm:ss", nullable = false)

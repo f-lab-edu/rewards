@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.basestudy.rewards.entity.Member;
+import com.basestudy.rewards.domain.Member;
 import com.basestudy.rewards.service.MemberService;
 
 import lombok.RequiredArgsConstructor;

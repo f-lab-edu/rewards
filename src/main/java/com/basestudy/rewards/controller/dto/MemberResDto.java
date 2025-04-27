@@ -21,7 +21,7 @@ import lombok.ToString;
 public class MemberResDto{
     @Schema(description = "사용자고유번호")
     @NotEmpty
-    private long id;
+    private Long id;
     @Schema(description = "이메일", nullable = false, example = "steven@netmail.com")
     @NotBlank
     private String email;

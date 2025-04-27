@@ -1,4 +1,4 @@
-package com.basestudy.rewards.entity;
+package com.basestudy.rewards.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,9 +32,9 @@ import lombok.NoArgsConstructor;
 public class Member implements UserDetails{
     
     @Id
-    @Column(name = "member_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY) //지연로딩 불가, DB의 auto increment에 키생성 위임
-    private long id;
+    private Long id;
 
     @Column(nullable = false, length = 200)
     @Email

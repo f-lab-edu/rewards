@@ -18,13 +18,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberCouponResDto {
-    private long couponId;
-    private long memberId;
+    private Long couponId;
+    private Long memberId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") 
     private LocalDateTime issuDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") 
     private LocalDateTime expiredDate;
-    private boolean allowDup;
 
     private String name;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") 
