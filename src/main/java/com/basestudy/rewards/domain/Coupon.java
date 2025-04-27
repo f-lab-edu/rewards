@@ -33,7 +33,7 @@ public class Coupon {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     //TODO: name을 id로 변경하고 enum class로 관리하기
     @Column(nullable = false)
     private String name;

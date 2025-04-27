@@ -24,11 +24,11 @@ public class RedisRepository {
     private static final String COUPON_LOCK_PREFIX = "coupon:lock:";
 
     // coupon:lock:{memberId}
-    public CouponLock getLockKey(long memberId) {
+    public CouponLock getLockKey(Long memberId) {
         return (CouponLock)redisTemplate.opsForValue().get(lockKey(memberId));
     }
 
-    public void saveLockKeyDone(long memberId, long couponId) {
+    public void saveLockKeyDone(Long memberId, Long couponId) {
         redisTemplate.opsForValue().set(
             lockKey(memberId), CouponLock.builder()
                 .couponId(couponId)
@@ -36,7 +36,7 @@ public class RedisRepository {
                 .build(), ttlInSeconds, TimeUnit.SECONDS);
     }
 
-    public void saveLockKeyProcessing(long memberId, long couponId) {
+    public void saveLockKeyProcessing(Long memberId, Long couponId) {
         redisTemplate.opsForValue().set(
             lockKey(memberId), CouponLock.builder()
                 .couponId(couponId)
@@ -44,37 +44,37 @@ public class RedisRepository {
                 .build(), ttlInSeconds, TimeUnit.SECONDS);
     }
 
-    public void deleteLockKey(long memberId) {
+    public void deleteLockKey(Long memberId) {
         redisTemplate.delete(lockKey(memberId));
     }
 
     // coupon:count:{couponId}
     // 데이터 저장 (TTL 포함)
-    public void saveCountKey(long couponId, int quantity, long ttlInSeconds) {
+    public void saveCountKey(Long couponId, int quantity, long ttlInSeconds) {
         redisTemplate.opsForValue().set(countKey(couponId), quantity, ttlInSeconds, TimeUnit.SECONDS);
     }
 
     // 데이터 저장 (TTL 없이)
-    public void saveCountKey(long couponId, int quantity) {
+    public void saveCountKey(Long couponId, int quantity) {
         redisTemplate.opsForValue().set(countKey(couponId), quantity);
     }
 
-    public void saveExhausted(long couponId, CouponStatus status) {
+    public void saveExhausted(Long couponId, CouponStatus status) {
         redisTemplate.opsForValue().set(countKey(couponId), status);
     }
 
     // 데이터 삭제
-    public void deleteCountKey(long couponId) {
+    public void deleteCountKey(Long couponId) {
         redisTemplate.delete(countKey(couponId));
     }
 
     // TTL 확인
-    public Long getTTLCountKey(long couponId) {
+    public long getTTLCountKey(Long couponId) {
         return redisTemplate.getExpire(countKey(couponId), TimeUnit.SECONDS);
     }
 
     // 수량감소
-    public long decrement(long couponId) {
+    public long decrement(Long couponId) {
         return redisTemplate.opsForValue().decrement(countKey(couponId));
     }
     
@@ -84,11 +84,11 @@ public class RedisRepository {
         log.info("Message sent to channel={}, message={}", COUPON_EXHAUSTED, message);
     }
 
-    private String countKey(long couponId) {
+    private String countKey(Long couponId) {
         return COUPON_COUNT_PREFIX + couponId;
     }
     
-    private String lockKey(long couponId) {
+    private String lockKey(Long couponId) {
         return COUPON_LOCK_PREFIX + couponId;
     }
 

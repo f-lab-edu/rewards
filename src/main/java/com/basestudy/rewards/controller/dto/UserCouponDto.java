@@ -16,9 +16,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserCouponDto {
-    private long id;
-    private long couponId;
-    private long memberId;
+    private Long id;
+    private Long couponId;
+    private Long memberId;
     private LocalDateTime issueDate;
     private LocalDateTime expiredDate;
 }

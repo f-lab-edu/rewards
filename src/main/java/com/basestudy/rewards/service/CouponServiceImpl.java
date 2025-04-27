@@ -25,6 +25,7 @@ public class CouponServiceImpl implements CouponService{
     private final CouponRepository couponRepository;
     private final RedisRepository redisRepository;
 
+    @Override
     @Transactional
     public ApiResponseWrapper<?> createCoupon(CouponDto couponDto){
         valid(couponDto);
@@ -34,19 +35,22 @@ public class CouponServiceImpl implements CouponService{
         return ApiResponseWrapper.createSuccess("저장되었습니다.");
     }
 
+    @Override
     @Transactional(readOnly = true)
-    public ApiResponseWrapper<CouponDto> getCoupon(long id){
+    public ApiResponseWrapper<CouponDto> getCoupon(Long id){
         return couponRepository.findById(id)
                             .map(coupon -> ApiResponseWrapper.createSuccess(CouponMapper.toDto(coupon)))
                             .orElse(ApiResponseWrapper.createFail(null, "400", "조회된 결과가 없습니다."));
     }
 
+    @Override
     @Transactional
     public ApiResponseWrapper<?> getCoupons(){
         //TODO: 페이징처리하기
         return ApiResponseWrapper.createSuccess(null);
     }
 
+    @Override
     @Transactional
     public ApiResponseWrapper<?> updateCoupon(CouponDto couponDto){
         Coupon coupon = this.findCouponById(couponDto.getCouponId());
@@ -56,8 +60,9 @@ public class CouponServiceImpl implements CouponService{
         return ApiResponseWrapper.createSuccess("저장되었습니다.");
     }
 
+    @Override
     @Transactional
-    public ApiResponseWrapper<?> suspendCoupon(long id, String suspensionReason){
+    public ApiResponseWrapper<?> suspendCoupon(Long id, String suspensionReason){
         Coupon coupon = this.findCouponById(id);
         coupon.suspend(suspensionReason);
 
@@ -65,8 +70,9 @@ public class CouponServiceImpl implements CouponService{
         return ApiResponseWrapper.createSuccess("저장되었습니다.");
     }
 
+    @Override
     @Transactional
-    public ApiResponseWrapper<?> deleteCoupon(long id){
+    public ApiResponseWrapper<?> deleteCoupon(Long id){
         Coupon coupon = this.findCouponById(id);
         coupon.delete();
 
@@ -74,8 +80,9 @@ public class CouponServiceImpl implements CouponService{
         return ApiResponseWrapper.createSuccess("저장되었습니다.");
     }
 
+    @Override
     @Transactional(readOnly = true)
-    public Coupon findCouponById(long id){
+    public Coupon findCouponById(Long id){
         return couponRepository.findById(id)
                         .orElseThrow(()->new NoResultException("존재하지 않습니다."));
     }
@@ -110,8 +117,9 @@ public class CouponServiceImpl implements CouponService{
      * 쿠폰 활성화
      * TODO: 배치로 뺄것
      */
+    @Override
     @Transactional
-    public ApiResponseWrapper<?> setInitialCouponQuantity(long couponId) {
+    public ApiResponseWrapper<?> setInitialCouponQuantity(Long couponId) {
         Coupon coupon = this.findCouponById(couponId);
         redisRepository.saveCountKey(couponId, coupon.getQuantity().getTotal(), coupon.getAvailableSeconds());
 
@@ -124,7 +132,8 @@ public class CouponServiceImpl implements CouponService{
      * 쿠폰 수량 차감
      * 소진시 redis 메세지 전송 및 예외처리
      */
-    public Long decreaseCouponQuantity(long couponId) {
+    @Override
+    public Long decreaseCouponQuantity(Long couponId) {
         Long remainingQuantity = redisRepository.decrement(couponId);
 
         if (remainingQuantity != null && remainingQuantity < 0) {
@@ -148,8 +157,9 @@ public class CouponServiceImpl implements CouponService{
      * mysql 쿠폰 소진 처리
      * 반복 호출을 대비해 상태확인
      */
+    @Override
     @Transactional
-    public void setExhaustionCoupon(long couponId){
+    public void setExhaustionCoupon(Long couponId){
         Coupon coupon = this.findCouponById(couponId);
 
         if(!coupon.isExhausted()){
@@ -158,4 +168,6 @@ public class CouponServiceImpl implements CouponService{
             redisRepository.saveExhausted(couponId, CouponStatus.EXHAUSTED);
         }
     }
+
+
 }

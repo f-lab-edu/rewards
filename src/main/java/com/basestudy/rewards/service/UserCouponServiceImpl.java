@@ -32,7 +32,7 @@ public class UserCouponServiceImpl implements UserCouponService{
     private final RedisRepository redisRepository;
     private final CouponService couponService;
   
-    public ApiResponseWrapper<?> distributeCoupon(Member member, long couponId){
+    public ApiResponseWrapper<?> distributeCoupon(Member member, Long couponId){
         //TODO: 권한확인
         
         CouponLock couponLock = redisRepository.getLockKey(member.getId()); //coupon:lock:memberId
@@ -71,7 +71,7 @@ public class UserCouponServiceImpl implements UserCouponService{
                 });
     }
 
-    private void saveCouponLockAndTriggerKafka(Long couponId, long memberId) {
+    private void saveCouponLockAndTriggerKafka(Long couponId, Long memberId) {
         // 1. 쿠폰 Lock 저장
         redisRepository.saveLockKeyProcessing(memberId, couponId);
         try {

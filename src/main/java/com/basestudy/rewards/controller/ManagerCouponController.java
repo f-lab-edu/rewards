@@ -39,8 +39,7 @@ public class ManagerCouponController {
     })
     @PostMapping("generate")
     public ApiResponseWrapper<?> generateCoupon(@RequestBody CouponDto couponDto) {
-        ApiResponseWrapper<?> res = couponService.createCoupon(couponDto);        
-        return res;
+        return couponService.createCoupon(couponDto);
     }
 
     @Operation(summary = "쿠폰 정보 조회", description = "쿠폰 한개를 조회합니다.", tags = {"coupon-manager"})
@@ -48,9 +47,8 @@ public class ManagerCouponController {
         @ApiResponse(responseCode = "400", description = "조회된 정보가 없습니다.")
     })
     @GetMapping("get/{id}")
-    public ApiResponseWrapper<CouponDto> getCoupon(@PathVariable long id) {
-        ApiResponseWrapper<CouponDto> res = couponService.getCoupon(id);
-        return res;
+    public ApiResponseWrapper<CouponDto> getCoupon(@PathVariable Long id) {
+        return couponService.getCoupon(id);
     }
     
     @Operation(summary = "쿠폰 발급시작", description = "쿠폰을 발급가능상태로 활성화합니다.", tags = {"coupon-manager"})
@@ -58,9 +56,8 @@ public class ManagerCouponController {
         @ApiResponse(responseCode = "400", description = "조회된 정보가 없습니다.")
     })
     @PutMapping("{id}")
-    public ApiResponseWrapper<?> activeCoupon(@AuthenticationPrincipal Member member, @PathVariable long id) {
-        ApiResponseWrapper<?> res = couponService.setInitialCouponQuantity(id);
-        return res;
+    public ApiResponseWrapper<?> activeCoupon(@AuthenticationPrincipal Member member, @PathVariable Long id) {
+        return couponService.setInitialCouponQuantity(id);
     }
 
     //Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();

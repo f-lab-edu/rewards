@@ -27,13 +27,13 @@ public class UserCoupon {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY) //지연로딩 불가, DB의 auto increment에 키생성 위임
-    private long id;
+    private Long id;
 
     @Column(name = "coupon_id")
-    private long couponId;
+    private Long couponId;
 
     @Column(name = "member_id")
-    private long memberId;
+    private Long memberId;
 
     @Column(nullable = false, name = "issue_date")
     private LocalDateTime issueDate;

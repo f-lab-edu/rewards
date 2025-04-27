@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.basestudy.rewards.domain.UserCoupon;
 
 public interface UserCouponRepository extends JpaRepository<UserCoupon, Long>{
-    Optional<UserCoupon> findByMemberIdAndCouponId(long memberId, long couponId);
+    Optional<UserCoupon> findByMemberIdAndCouponId(Long memberId, Long couponId);
     
 }
