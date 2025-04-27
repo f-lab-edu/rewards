@@ -10,11 +10,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.basestudy.rewards.ApiResponseWrapper;
 import com.basestudy.rewards.controller.dto.SignUpDto;
 import com.basestudy.rewards.service.MemberServiceImpl;
 
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class) //의존중인 객체를 가짜 객체를 생성해 처리
 public class MemberServiceTest {
     @Mock

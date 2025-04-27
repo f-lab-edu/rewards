@@ -1,0 +1,51 @@
+spring:
+    application:
+        name: rewards
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://${DB_HOST}/basestudy
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                format: true
+    data:
+        redis: 
+            host: ${REDIS_HOST}
+            port: ${REDIS_PORT}
+            ttl:  ${REDIS_TTL}
+            coupon:
+                lock:
+                    prefix: ${COUPON_LOCK_PREFIX}
+    kafka:
+        bootstrap-servers: ${KAFKA_URL}
+        producer: 
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.apache.kafka.common.serialization.StringSerializer
+        consumer:
+            group-id: ${GROUP_ID}
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            auto-offset-reset: earliest
+logging:
+    config: classpath:log4j2.xml
+    level:
+        org:
+            springframework:
+                web: DEBUG
+springdoc:
+    api-docs:
+        enabled: true
+        path: /api-docs
+    swagger-ui:
+        enabled: true
+        path: /api-docs
+    paths-to-match: /api/**
+
+jwt:
+    expiration: ${JWT_EXPIRATION}
+    SECRET: ${JWT_SECRET}

@@ -20,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.basestudy.rewards.ApiResponseWrapper;
 import com.basestudy.rewards.constants.CouponLockStatus;
@@ -34,7 +35,7 @@ import com.basestudy.rewards.infra.KafkaProducer;
 import com.basestudy.rewards.infra.RedisRepository;
 import com.basestudy.rewards.repository.UserCouponRepository;
 
-
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class UserCouponServiceTest {
     @Mock

@@ -1,0 +1,48 @@
+spring:
+    application:
+        name: rewards
+    datasource:
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1
+        username: sa
+        password: ""
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: create-drop  # 테스트 시 스키마 자동 생성
+        properties:
+            hibernate:
+                format: true
+    data:
+        redis: 
+            host: localhost
+            port: 6379  # Testcontainers가 동적 포트 할당
+            ttl: 60
+            coupon:
+                lock:
+                    prefix: TEST-PREFIX
+    kafka:
+        bootstrap-servers: ${spring.kafka.bootstrap-servers}
+        producer: 
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.apache.kafka.common.serialization.StringSerializer
+        consumer:
+            group-id: test-group
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            auto-offset-reset: earliest
+logging:
+    config: classpath:log4j2.xml
+    level:
+        org:
+            springframework:
+                web: DEBUG
+springdoc:
+    api-docs:
+        enabled: true
+        path: /api-docs
+    swagger-ui:
+        enabled: true
+        path: /api-docs
+    paths-to-match: /api/**
+
