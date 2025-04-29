@@ -1,6 +1,9 @@
 package com.basestudy.rewards.infra;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.basestudy.rewards.controller.dto.UserCouponDto;
@@ -16,18 +19,16 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class KafkaConsumer {
     private final UserCouponService userCouponService;
+    private static final String TOPIC = "COUPON";
+    @Value("${spring.kafka.consumer.group-id}")
+    private String groupId;
 
-    @KafkaListener(topics = "COUPON", groupId = "my-group") //동일 그룹내 소비자들 파티션 병렬처리
-    public void consumeMessage(String message) {
-        log.info("Consumed message: {}",message);
-        //db저장
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            UserCouponDto userCouponDto = objectMapper.readValue(message, UserCouponDto.class);
-            userCouponService.saveUserCoupon(userCouponDto);
-        } catch (JsonProcessingException e) {
-            log.error("Consumed error: message={}, consued message={}",e.getMessage(), message);
-            //TODO: objectmapper가 에러가 나면 key추출도 안되는거아닌가..
-        }
+
+    @KafkaListener(topics = TOPIC, groupId = "${spring.kafka.consumer.group-id}") //동일 그룹내 소비자들 파티션 병렬처리
+    public void listen(ConsumerRecord<Long, Long> record) {
+        Long couponId = record.key();
+        Long userId = record.value();
+        log.debug("kafkaListener : TOPIC = {}, couponID = {}, userId = {}", TOPIC, couponId, userId);
+        userCouponService.saveUserCoupon(couponId, userId);
     }
 }

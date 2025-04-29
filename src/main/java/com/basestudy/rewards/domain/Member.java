@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
@@ -27,6 +28,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false , of = "id")
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor //생성자가 있어서 기본생성자 추가해줘야함, lombok @NoArgsContructor(access = AccessLevel.PROTECTED) 사용
 public class Member implements UserDetails{

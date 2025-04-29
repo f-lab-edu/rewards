@@ -20,25 +20,31 @@ public class KafkaConsumerConfig {
     private String host;
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
+    @Value("${spring.kafka.consumer.key-deserializer}")
+    private String keyDeserializer;
+    @Value("${spring.kafka.consumer.value-deserializer}")
+    private String valueDeserializer;
 
     @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, host);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, keyDeserializer);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
         return props;
     }
 
     @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
+    public ConsumerFactory<Long, Long> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory =
+    public ConcurrentKafkaListenerContainerFactory<Long, Long> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<Long, Long> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;

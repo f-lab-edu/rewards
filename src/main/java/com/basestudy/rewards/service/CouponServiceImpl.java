@@ -9,6 +9,7 @@ import com.basestudy.rewards.ApiResponseWrapper;
 import com.basestudy.rewards.constants.CouponStatus;
 import com.basestudy.rewards.controller.dto.CouponDto;
 import com.basestudy.rewards.domain.Coupon;
+import com.basestudy.rewards.domain.Quantity;
 import com.basestudy.rewards.infra.RedisRepository;
 import com.basestudy.rewards.repository.CouponRepository;
 import com.basestudy.rewards.service.mapper.CouponMapper;
@@ -115,7 +116,6 @@ public class CouponServiceImpl implements CouponService{
 
     /*
      * 쿠폰 활성화
-     * TODO: 배치로 뺄것
      */
     @Override
     @Transactional
@@ -135,12 +135,12 @@ public class CouponServiceImpl implements CouponService{
     @Override
     public Long decreaseCouponQuantity(Long couponId) {
         Long remainingQuantity = redisRepository.decrement(couponId);
-
-        if (remainingQuantity != null && remainingQuantity < 0) {
+       
+        if (remainingQuantity != null && remainingQuantity < 0) {  
             publishCouponSoldOutEvent(couponId);
             throw new RuntimeException("쿠폰이 모두 소진되었습니다.");
         }
-
+        
         return remainingQuantity;
     }
 
@@ -159,15 +159,15 @@ public class CouponServiceImpl implements CouponService{
      */
     @Override
     @Transactional
-    public void setExhaustionCoupon(Long couponId){
+    public void updateCouponStatusToExhausted(Long couponId){
         Coupon coupon = this.findCouponById(couponId);
-
+        Quantity quantity = coupon.getQuantity();
         if(!coupon.isExhausted()){
+            quantity.setIssued(quantity.getTotal());
+            coupon.setQuantity(quantity);
             coupon.setStatus(CouponStatus.EXHAUSTED);
             couponRepository.save(coupon);
             redisRepository.saveExhausted(couponId, CouponStatus.EXHAUSTED);
         }
     }
-
-
 }
