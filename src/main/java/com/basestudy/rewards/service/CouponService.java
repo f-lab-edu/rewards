@@ -14,5 +14,5 @@ public interface CouponService {
     public Coupon findCouponById(Long id);
     public Long decreaseCouponQuantity(Long couponId);
     public ApiResponseWrapper<?> setInitialCouponQuantity(Long couponId);
-    public void setExhaustionCoupon(Long couponId);
+    public void updateCouponStatusToExhausted(Long couponId);
 }

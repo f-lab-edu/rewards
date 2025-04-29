@@ -31,6 +31,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.redisson:redisson-spring-boot-starter:3.30.0'
     implementation 'org.springframework.kafka:spring-kafka'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -40,6 +41,9 @@ dependencies {
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	testImplementation 'org.testcontainers:kafka'
+	testImplementation 'it.ozimov:embedded-redis:0.7.2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    testRuntimeOnly 'com.h2database:h2'
 }
 configurations {
     all {

@@ -112,4 +112,11 @@ public class Coupon {
     public long getAvailableSeconds(){
         return Duration.between(this.getAvailableFrom(), this.getAvailableTo()).getSeconds();
     }
+
+    public boolean canIssue(LocalDateTime now) {
+        if(!CouponPolicy.canIssue(this, now)){
+            return false;
+        }
+        return true;
+    }
 }
