@@ -34,10 +34,4 @@ public class UserCouponController {
     public ApiResponseWrapper<?> distributeCoupon(@AuthenticationPrincipal Member member, @RequestBody Map<String, Long> reqbody) {
         return userCouponService.distributeCoupon(member, reqbody.get("couponId"));
     }
-
-    @Operation(summary = "사용자 쿠폰 목록조회", description = "사용자별 보유한 쿠폰을 조회합니다.", tags = {"coupon-user"})
-    @GetMapping("user-coupons")
-    public ApiResponseWrapper<?> getUserCoupons(@AuthenticationPrincipal Member member, @RequestParam Long memberId, @RequestParam int offset, @RequestParam int limit) {
-        return userCouponService.getUserCoupons(memberId, offset, limit);
-    }
 }
