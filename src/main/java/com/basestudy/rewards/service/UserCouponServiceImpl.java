@@ -152,4 +152,8 @@ public class UserCouponServiceImpl implements UserCouponService{
         redisRepository.saveLockKeyDone(userCouponDto.getMemberId(), userCouponDto.getCouponId());
     }
 
+    @Transactional(readOnly = true)
+    public ApiResponseWrapper<?> getUserCoupons(Long memberId, int offset, int limit) {
+        return ApiResponseWrapper.createSuccess(userCouponRepository.findAllUsersWithCoupons(memberId, offset, limit));
+    }
 }
