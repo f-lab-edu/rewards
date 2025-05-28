@@ -47,7 +47,6 @@ public class CouponServiceImpl implements CouponService{
     @Override
     @Transactional
     public ApiResponseWrapper<?> getCoupons(){
-        //TODO: 페이징처리하기
         return ApiResponseWrapper.createSuccess(null);
     }
 
@@ -167,7 +166,7 @@ public class CouponServiceImpl implements CouponService{
             coupon.setQuantity(quantity);
             coupon.setStatus(CouponStatus.EXHAUSTED);
             couponRepository.save(coupon);
-            redisRepository.saveExhausted(couponId, CouponStatus.EXHAUSTED);
+            //redisRepository.saveExhausted(couponId, CouponStatus.EXHAUSTED);
         }
     }
 }

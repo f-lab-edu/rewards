@@ -9,6 +9,6 @@ import com.basestudy.rewards.domain.UserCoupon;
 
 public interface UserCouponRepository extends JpaRepository<UserCoupon, Long>, UserWithCouponsView{
     Optional<UserCoupon> findByMemberIdAndCouponId(Long memberId, Long couponId);
-    public List<UserCoupon> findByUserId(Long userId);
+    public List<UserCoupon> findByMemberId(Long memberId);
     
 }

@@ -1,9 +1,12 @@
 package com.basestudy.rewards.controller.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,13 +14,13 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserWithCouponsDto {
-    private String memberId;
+    private Long memberId;
     private String memberName;
-    private List<CouponDto> coupons;
-
-    public UserWithCouponsDto(String memberId, String memberName, List<CouponDto> coupons) {
-        this.memberId = memberId;
-        this.coupons = coupons;
-    }
+    private Long couponId;
+    private String couponName;
+    private LocalDateTime issueDate;
+    private LocalDateTime expiredDate;
 }
