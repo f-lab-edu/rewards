@@ -8,6 +8,10 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
+import com.basestudy.rewards.infra.dto.CouponIssueRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -17,12 +21,13 @@ import lombok.extern.log4j.Log4j2;
 public class KafkaProducer {
     
     private static final String TOPIC = "COUPON";
-    private final KafkaTemplate<Long, Long> producer;
+    private final KafkaTemplate<String, String> producer;
+    private final ObjectMapper objectMapper;
 
-    public void sendCouponRequest(Long couponId, Long userId) {
-        ProducerRecord<Long, Long> record = new ProducerRecord<>(TOPIC, couponId, userId);
-        // 쿠폰ID를 키로 설정하여 동일 쿠폰은 항상 같은 파티션으로
-        CompletableFuture<SendResult<Long, Long>> future = producer.send(record);
+    public void sendCouponRequest(Long couponId, Long userId) throws JsonProcessingException {
+        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, String.valueOf(userId), objectMapper.writeValueAsString(new CouponIssueRequest(couponId, userId)));
+
+        CompletableFuture<SendResult<String, String>> future = producer.send(record);
             future.whenComplete((result, ex) -> {
                 if (ex == null) {
                     RecordMetadata metadata = result.getRecordMetadata();

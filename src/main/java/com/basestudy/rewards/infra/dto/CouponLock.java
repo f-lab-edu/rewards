@@ -1,4 +1,4 @@
-package com.basestudy.rewards.controller.dto;
+package com.basestudy.rewards.infra.dto;
 
 import com.basestudy.rewards.constants.CouponLockStatus;
 
