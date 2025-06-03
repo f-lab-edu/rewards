@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.basestudy.rewards.constants.CouponLockStatus;
-import com.basestudy.rewards.controller.dto.CouponLock;
+import com.basestudy.rewards.infra.dto.CouponLock;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,11 +26,6 @@ public class RedisRepository {
     private int ttlInSeconds;
     @Value("${spring.data.redis.coupon.lock.prefix}")
     private String COUPON_LOCK_PREFIX;
-
-    private void debugLog(String operation, String key, Object value) {
-        log.error("[REDIS DEBUG] {} - key: {}, value: {}, valueType: {}", operation, key, value, (value != null ? value.getClass().getSimpleName() : "null"));
-    }
-
     
     // coupon:lock:{memberId}
     public CouponLock getLockKey(Long memberId) {

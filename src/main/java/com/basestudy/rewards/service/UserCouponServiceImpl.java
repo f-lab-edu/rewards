@@ -12,14 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.basestudy.rewards.ApiResponseWrapper;
 import com.basestudy.rewards.constants.CouponLockStatus;
-import com.basestudy.rewards.controller.dto.CouponLock;
 import com.basestudy.rewards.controller.dto.UserCouponDto;
 import com.basestudy.rewards.domain.Coupon;
 import com.basestudy.rewards.domain.Member;
 import com.basestudy.rewards.infra.KafkaProducer;
 import com.basestudy.rewards.infra.RedisRepository;
+import com.basestudy.rewards.infra.dto.CouponLock;
 import com.basestudy.rewards.repository.UserCouponRepository;
 import com.basestudy.rewards.service.mapper.UserCouponMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -133,7 +134,7 @@ public class UserCouponServiceImpl implements UserCouponService{
         redisRepository.deleteLockKey(memberId);
     }
 
-    private void saveCouponLockAndTriggerKafka(Long couponId, Long memberId) {
+    private void saveCouponLockAndTriggerKafka(Long couponId, Long memberId) throws JsonProcessingException {
         redisRepository.saveLockKeyProcessing(memberId, couponId);
         kafkaProducer.sendCouponRequest(couponId, memberId);
     }
