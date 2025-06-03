@@ -28,6 +28,7 @@ public class KafkaConsumer {
     public void listen(ConsumerRecord<Long, Long> record) {
         Long couponId = record.key();
         Long userId = record.value();
+        System.out.println("[Thread] " + Thread.currentThread().getName() + " - Consumed: " + record);
         log.debug("kafkaListener : TOPIC = {}, couponID = {}, userId = {}", TOPIC, couponId, userId);
         userCouponService.saveUserCoupon(couponId, userId);
     }

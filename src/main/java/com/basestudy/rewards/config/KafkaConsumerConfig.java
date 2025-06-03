@@ -3,6 +3,7 @@ package com.basestudy.rewards.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +48,12 @@ public class KafkaConsumerConfig {
         ConcurrentKafkaListenerContainerFactory<Long, Long> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
+        factory.setConcurrency(3); // Set the number of concurrent consumers
         return factory;
+    }
+
+    @Bean
+    public NewTopic topic() {
+        return new NewTopic("COUPON", 3, (short) 1); // Topic name, partitions, replication factor
     }
 }
